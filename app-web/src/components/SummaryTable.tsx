@@ -25,7 +25,13 @@ export function SummaryTable() {
 
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {summaryDays.map((date) => {
-          return <HabitDay key={date.toISOString()} />
+          return (
+            <HabitDay
+              key={date.toISOString()}
+              amount={5}
+              completed={Math.round(Math.random() * 5)}
+            />
+          )
         })}
 
         {amountDaysOfToFill > 0 &&
