@@ -1,12 +1,26 @@
+import { useEffect, useState } from 'react'
+import { api } from '../libs/axios'
 import { generateDatesFromYearBenning } from '../utils/generate-dates-from-year-begenning'
 import { HabitDay } from './HabitDay'
 
 export function SummaryTable() {
+  const [summary, setSummary] = useState([])
+
   const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
   const summaryDays = generateDatesFromYearBenning()
 
   const minimumSummaryDatesSize = 18 * 7 // 18 weeks
   const amountDaysOfToFill = minimumSummaryDatesSize - summaryDays.length
+
+  useEffect(() => {
+    getSummaryHabits()
+  }, [])
+
+  async function getSummaryHabits() {
+    const newSummary = await api.get('/summary')
+
+    setSummary(newSummary.data)
+  }
 
   return (
     <div className="w-full flex gap-3">
