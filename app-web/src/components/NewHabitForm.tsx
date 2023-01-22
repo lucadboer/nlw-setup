@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { api } from '../libs/axios'
 
 const newHabitFormSchema = z.object({
   habit: z.string().min(1),
@@ -34,11 +35,19 @@ export function NewHabitForm() {
     'Sábado',
   ]
 
-  function handleCreateNewHabit(data: NewHabitInputs) {
-    console.log(data)
-    console.log(weekDays)
+  async function handleCreateNewHabit(data: NewHabitInputs) {
+    if (data.habit && weekDays.length !== 0) {
+      api.post('habits', {
+        data: data.habit,
+        weekDays,
+      })
 
-    reset()
+      alert('criado')
+      setWeekDays([])
+      reset()
+    } else {
+      alert('Coloque pelo menos um dia na semana')
+    }
   }
 
   function handleToggleWeekDay(weekDay: number) {
@@ -91,6 +100,7 @@ export function NewHabitForm() {
               key={day}
               className="flex items-center gap-3 group"
               onCheckedChange={() => handleToggleWeekDay(index)}
+              checked={weekDays.includes(index)}
             >
               <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-800 group-data-[state=checked]:bg-green-500">
                 <Checkbox.Indicator>

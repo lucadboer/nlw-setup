@@ -1,10 +1,18 @@
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { api } from '../libs/axios'
 import { generateDatesFromYearBenning } from '../utils/generate-dates-from-year-begenning'
 import { HabitDay } from './HabitDay'
 
+type Summary = {
+  id: string
+  date: string
+  amount: number
+  completed: number
+}[]
+
 export function SummaryTable() {
-  const [summary, setSummary] = useState([])
+  const [summary, setSummary] = useState<Summary>([])
 
   const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
   const summaryDays = generateDatesFromYearBenning()
@@ -25,13 +33,13 @@ export function SummaryTable() {
   return (
     <div className="w-full flex gap-3">
       <div className="grid grid-rows-7 grid-flow-row gap-3">
-        {weekDays.map((day, i) => {
+        {weekDays.map((date, i) => {
           return (
             <div
-              key={`${day}-${i}`}
+              key={`${date}-${i}`}
               className="text-zinc-400 text-xl font-bold w-10 h-10 flex justify-center items-center"
             >
-              {day}
+              {date}
             </div>
           )
         })}
@@ -39,11 +47,15 @@ export function SummaryTable() {
 
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {summaryDays.map((date) => {
+          const dayInSummary = summary.find((day) => {
+            return dayjs(date).isSame(day.date, 'day')
+          })
           return (
             <HabitDay
               key={date.toISOString()}
-              amount={5}
-              completed={Math.round(Math.random() * 5)}
+              date={date}
+              amount={dayInSummary?.amount}
+              completed={dayInSummary?.completed}
             />
           )
         })}
