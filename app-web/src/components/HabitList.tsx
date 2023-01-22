@@ -6,6 +6,7 @@ import { api } from '../libs/axios'
 
 interface HabitListProps {
   date: Date
+  onCompletedHabit: (amount: number) => void
 }
 
 interface HabitsInfo {
@@ -17,7 +18,7 @@ interface HabitsInfo {
   completedHabits: string[]
 }
 
-export function HabitList({ date }: HabitListProps) {
+export function HabitList({ date, onCompletedHabit }: HabitListProps) {
   const [habits, setHabits] = useState<HabitsInfo>()
 
   useEffect(() => {
@@ -40,23 +41,20 @@ export function HabitList({ date }: HabitListProps) {
 
     const isHabitCompleted = habits?.completedHabits.includes(habitId)
 
+    let completedHabits: string[] = []
+
     if (isHabitCompleted) {
-      const habitToRemoved = habits?.completedHabits.filter(
-        (id) => id !== habitId,
-      )
-
-      setHabits({
-        possibleHabits: habits?.possibleHabits!,
-        completedHabits: habitToRemoved!,
-      })
+      completedHabits = habits!.completedHabits.filter((id) => id !== habitId)
     } else {
-      const habitToAdded = [...habits!.completedHabits, habitId]
-
-      setHabits({
-        possibleHabits: habits?.possibleHabits!,
-        completedHabits: habitToAdded!,
-      })
+      completedHabits = [...habits!.completedHabits, habitId]
     }
+
+    setHabits({
+      possibleHabits: habits!.possibleHabits,
+      completedHabits,
+    })
+
+    onCompletedHabit(completedHabits.length)
   }
 
   const isDateInPast = dayjs(date).endOf('day').isBefore(new Date())
@@ -67,12 +65,12 @@ export function HabitList({ date }: HabitListProps) {
         return (
           <Checkbox.Root
             key={habit.id}
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-3 group outline-none disabled:cursor-not-allowed"
             checked={habits.completedHabits.includes(habit.id)}
             onCheckedChange={() => handleToggleChecked(habit.id)}
             disabled={isDateInPast}
           >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-800 group-data-[state=checked]:bg-green-500">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-800 group-data-[state=checked]:bg-green-500 transition-colors duration-300 group-focus:outline-none group-focus:ring-2 group-focus:ring-violet-600 group-focus:ring-offset-2 group-focus:ring-offset-background">
               <Checkbox.Indicator>
                 <Check size={20} />
               </Checkbox.Indicator>

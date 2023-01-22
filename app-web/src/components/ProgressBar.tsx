@@ -8,7 +8,7 @@ export function ProgressBar({ progress }: ProgressBarProps) {
   return (
     <Progress.Root className="mt-4 h-3 w-full rounded-xl bg-zinc-700">
       <Progress.Indicator
-        className="h-3 rounded-full bg-violet-600"
+        className="h-3 rounded-full bg-violet-600 transition-all duration-300"
         style={{ width: `${progress}%` }}
       />
     </Progress.Root>

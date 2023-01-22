@@ -37,14 +37,17 @@ export function NewHabitForm() {
 
   async function handleCreateNewHabit(data: NewHabitInputs) {
     if (data.habit && weekDays.length !== 0) {
-      api.post('habits', {
-        data: data.habit,
-        weekDays,
-      })
+      try {
+        await api.post('habits', {
+          title: data.habit,
+          weekDays,
+        })
 
-      alert('criado')
-      setWeekDays([])
-      reset()
+        reset()
+        setWeekDays([])
+      } catch (err) {
+        console.log(err)
+      }
     } else {
       alert('Coloque pelo menos um dia na semana')
     }
@@ -73,7 +76,7 @@ export function NewHabitForm() {
           type="text"
           id="habit"
           placeholder="Exercícios, dormir bem, etc..."
-          className="bg-zinc-800 p-4 rounded-lg placeholder:text-zinc-400 outline-none"
+          className="bg-zinc-800 p-4 rounded-lg placeholder:text-zinc-400 outline-none focus:outline-none focus:ring-2 focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-zinc-900"
           autoFocus
           {...register('habit')}
         />
@@ -98,11 +101,11 @@ export function NewHabitForm() {
           return (
             <Checkbox.Root
               key={day}
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-3 group outline-none"
               onCheckedChange={() => handleToggleWeekDay(index)}
               checked={weekDays.includes(index)}
             >
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-800 group-data-[state=checked]:bg-green-500">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-zinc-800 group-data-[state=checked]:bg-green-500 transition-colors duration-300 group-focus:ring-2 group-focus:ring-violet-600 group-focus:ring-offset-2 group-focus:ring-offset-zinc-900">
                 <Checkbox.Indicator>
                   <Check size={20} />
                 </Checkbox.Indicator>
@@ -117,7 +120,7 @@ export function NewHabitForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="flex items-center justify-center gap-2 mt-6 bg-green-600 h-[3.25rem] rounded-lg font-semibold transition hover:bg-green-500"
+        className="flex items-center justify-center gap-2 mt-6 bg-green-600 h-[3.25rem] rounded-lg font-semibold transition hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-background"
       >
         <Check size={20} weight="bold" />
         Confirmar
