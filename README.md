@@ -2,9 +2,9 @@
 
 > Rocketseat NLW
 
-Aplicação fullstack criada para ajudar a controlar os hábitos que a pessoa quer trazer e fixar em sua vida, organizando melhor a rotina. 
+Aplicação fullstack criada em um evento semanal com muito código, desafios e aprendizados. A ideia é ajudar o usuário a controlar os hábitos que a pessoa quer trazer e fixar em sua vida, organizando melhor a rotina.
 
-Fullstack application created to help control the habits that the person wants to bring and fix in their life, better organizing the routine.
+Fullstack application created in a weekly event with a lot of code, challenges and learning. The idea is to help the user to control the habits that the person wants to bring and fix in their life, better organizing their routine.
 
 ## 🛠 Technologies
 
