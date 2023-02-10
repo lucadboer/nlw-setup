@@ -1,7 +1,5 @@
 # NLW Setup
 
-![preview1](./.github/preview1.png)
-
 > Rocketseat NLW
 
 Aplicação fullstack criada para ajudar a controlar os hábitos que a pessoa quer trazer e fixar em sua vida, organizando melhor a rotina. 
